@@ -16,6 +16,10 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using MahApps.Metro.Controls;
 
+using GraphVizWrapper;
+using GraphVizWrapper.Commands;
+using GraphVizWrapper.Queries;
+
 namespace AutomataGP
 {
     /// <summary>
@@ -24,28 +28,60 @@ namespace AutomataGP
     public partial class MainWindow : MetroWindow
     {
 
-        public string[,] FSM { get; set; }
+        public List<List<string>> FSM { get; set; }
+        public List<List<string>> dummy { get; set; }
+
+        private void increaseSize()
+        {
+            List<string> newRow = new List<string>();
+            for (int i = 0; i < FSM.Count; i++) newRow.Add("");
+            FSM.Add(newRow);
+            foreach (List<string> oc in FSM)
+            {
+                oc.Add(" ");
+            }
+            Binding datagrid2dBinding = new Binding();
+            datagrid2dBinding.Path = new PropertyPath("dummy");
+            FSM_View.SetBinding(DataGrid2D.ItemsSource2DProperty, datagrid2dBinding);
+
+            datagrid2dBinding = new Binding();
+            datagrid2dBinding.Path = new PropertyPath("FSM");
+            FSM_View.SetBinding(DataGrid2D.ItemsSource2DProperty, datagrid2dBinding);
+        }
 
         public MainWindow()
         {
-            FSM = new string[20,20];
-            for(int i = 0; i < 5; i++)
-            {
-                for(int j = 0; j < 5; j++)
-                {
-                    FSM[i, j] = Convert.ToString(i + j);
-                }
-            }
+            FSM = new List<List<string>>();
+            dummy = new List<List<string>>();
             InitializeComponent();
             FSM_View.DataContext = this;
+            increaseSize();
+            increaseSize();
+            increaseSize();
         }
 
         
-
         private void WindowLoaded(object sender, RoutedEventArgs e)
         {
-            
+            var getStartProcessQuery = new GetStartProcessQuery();
+            var getProcessStartInfoQuery = new GetProcessStartInfoQuery();
+            var registerLayoutPluginCommand = new RegisterLayoutPluginCommand(getProcessStartInfoQuery, getStartProcessQuery);
+
+            // GraphGeneration can be injected via the IGraphGeneration interface
+
+            var wrapper = new GraphGeneration(getStartProcessQuery,
+                                              getProcessStartInfoQuery,
+                                              registerLayoutPluginCommand);
+
+            byte[] output = wrapper.GenerateGraph("digraph{a -> b; b -> c; c -> a;}", Enums.GraphReturnType.Png);
+
+            GraphVizHost.Source = ImageHelper.LoadImage(output);
         }
 
+        private void Add_Button_Click(object sender, RoutedEventArgs e)
+        {
+            increaseSize();
+            Console.WriteLine("ADD !");
+        }
     }
 }

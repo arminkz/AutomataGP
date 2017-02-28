@@ -6,12 +6,12 @@
         xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
         xmlns:dg2d="clr-namespace:DataGrid2DLibrary;assembly=DataGrid2DLibrary"
         xmlns:local="clr-namespace:AutomataGP"
-        mc:Ignorable="d" 
-        Title="AutomataGP v1.0" Height="536.957" Width="790.217" Background="White">
+        mc:Ignorable="d" Loaded="WindowLoaded"
+        Title="AutomataGP v1.0" Height="536.957" Width="790.217" Background="White" SnapsToDevicePixels="True">
 
     
     
-    <Grid SnapsToDevicePixels="True" Background="#FF676767">
+    <Grid  Background="#FF676767">
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
@@ -83,7 +83,7 @@
 
                         <DockPanel Margin="10">
                             <WrapPanel DockPanel.Dock="Top" Margin="0,0,0,5" >
-                                <Button Padding="5" Margin="0,0,4,0" >
+                                <Button Padding="5" Margin="0,0,4,0" Click="Add_Button_Click">
                                     <Image Width="20" Height="20" Source="Images/b_plus.png"/>
                                 </Button>
                                 <Button Padding="5" Margin="0,0,4,0"  >
