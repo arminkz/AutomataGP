@@ -3,10 +3,12 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:dg2d="clr-namespace:DataGrid2DLibrary;assembly=DataGrid2DLibrary"
         xmlns:local="clr-namespace:AutomataGP"
-        mc:Ignorable="d" Loaded="WindowLoaded"
-        Title="MainWindow" Height="536.957" Width="790.217" Background="#FF1E1E1E">
-    <Grid ShowGridLines="True" SnapsToDevicePixels="True">
+        mc:Ignorable="d" 
+        Loaded="WindowLoaded"
+        Title="AutomataGP v1.0" Height="536.957" Width="790.217" Background="White">
+    <Grid SnapsToDevicePixels="True" Background="#FF676767">
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
@@ -15,10 +17,10 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
-        <StatusBar Grid.Row="1" Grid.ColumnSpan="2" Background="#FF007ACC">
+        <StatusBar Grid.Row="1" Grid.ColumnSpan="2" Background="#FF4D4D4D">
             <StatusBar.ItemsPanel>
                 <ItemsPanelTemplate>
-                    <Grid ShowGridLines="True">
+                    <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="100" />
                             <ColumnDefinition Width="Auto" />
@@ -34,39 +36,94 @@
             </StatusBarItem>
         </StatusBar>
 
-        <TabControl TabStripPlacement="Left" Background="#FF2D2D30" Margin="20">
-            <TabItem>
-                <TabItem.Header>
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="Blue" Foreground="Blue" />
-                    </StackPanel>
-                </TabItem.Header>
-                <Label Content="Content goes here..." />
-            </TabItem>
+        <Border >
+            <TabControl TabStripPlacement="Left" Background="Transparent" Padding="0"
+                    BorderThickness="0,2,0,0" BorderBrush="Transparent">
 
-            <TabItem>
-                <TabItem.Header>
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="Red" Foreground="Red" />
-                    </StackPanel>
-                </TabItem.Header>
+                <TabControl.Resources>
+                    <Style TargetType="TabItem">
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="TabItem">
+                                    <Border Name="Border" BorderThickness="0,0,0,1" BorderBrush="#A1A1A1" Padding="15">
+                                        <ContentPresenter x:Name="ContentSite"
+                                        VerticalAlignment="Center"
+                                        HorizontalAlignment="Center"
+                                        ContentSource="Header"
+                                        Margin="10,2"/>
+                                    </Border>
+                                    <ControlTemplate.Triggers>
+                                        <Trigger Property="IsSelected" Value="True">
+                                            <Setter TargetName="Border" Property="Background" Value="#FF45A9E3" />
+                                        </Trigger>
+                                        <Trigger Property="IsSelected" Value="False">
+                                            <Setter TargetName="Border" Property="Background" Value="#FF676767" />
+                                        </Trigger>
+                                    </ControlTemplate.Triggers>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </TabControl.Resources>
 
-                <Border Grid.Column="1" Margin="30" Background="White" BorderBrush="#FF686868" BorderThickness="2">
-                    <Image  Name="GraphVizHost" HorizontalAlignment="Center" VerticalAlignment="Center" Stretch="None">
+                <TabItem>
+                    <TabItem.Header>
+                        <StackPanel Orientation="Vertical">
+                            <Image Source="Images/table_icon.png"/>
+                            <TextBlock Text="FSM Matrix" Margin="0,10,0,0" Foreground="#FFF1F1F1"  HorizontalAlignment="Center" />
+                        </StackPanel>
+                    </TabItem.Header>
 
-                    </Image>
-                </Border>
-            </TabItem>
+                    <Border Background="#FF45A9E3" CornerRadius="0,0,0,0">
+                        <!-- Bind Rows using the default StackPanel for the ItemsPanel -->
+                        
 
-            <TabItem>
-                <TabItem.Header>
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="Green" Foreground="Green" />
-                    </StackPanel>
-                </TabItem.Header>
-            </TabItem>
+                        <DockPanel Margin="10">
+                            <ToolBar DockPanel.Dock="Top" MinHeight="30"/>
+                            <dg2d:DataGrid2D Name="FSM_View" UseModifiedDataGridStyle="True" 
+                                         ItemsSource2D="{Binding FSM}" MinColumnWidth="50"/>
+                        </DockPanel>
 
-        </TabControl>
+                    </Border>
+
+
+                </TabItem>
+
+                <TabItem>
+                    <TabItem.Header>
+                        <StackPanel Orientation="Vertical">
+                            <Image Source="Images/graph_icon.png"/>
+                            <TextBlock Text="Graph" Margin="0,10,0,0" Foreground="#FFF1F1F1" HorizontalAlignment="Center"/>
+                        </StackPanel>
+                    </TabItem.Header>
+
+
+                    <Border Background="#FF45A9E3" >
+                        <Border Background="White" Margin="10" BorderBrush="#FF686868" BorderThickness="1">
+                            <Image  Name="GraphVizHost" HorizontalAlignment="Center" VerticalAlignment="Center" Stretch="None">
+
+                            </Image>
+                        </Border>
+                    </Border>
+
+                </TabItem>
+
+                <TabItem>
+                    <TabItem.Header>
+                        <StackPanel Orientation="Vertical">
+                            <Image Source="Images/tools_icon.png"/>
+                            <TextBlock Text="Tools" Margin="0,10,0,0" Foreground="#FFF1F1F1" HorizontalAlignment="Center"/>
+                        </StackPanel>
+                    </TabItem.Header>
+
+                    <Border Background="#FF45A9E3">
+                        
+                    </Border>
+
+                </TabItem>
+
+            </TabControl>
+        </Border>
         <!---->
         
         
