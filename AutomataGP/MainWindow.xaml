@@ -1,13 +1,16 @@
-﻿<Window x:Class="AutomataGP.MainWindow"
+﻿<Controls:MetroWindow x:Class="AutomataGP.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
         xmlns:dg2d="clr-namespace:DataGrid2DLibrary;assembly=DataGrid2DLibrary"
         xmlns:local="clr-namespace:AutomataGP"
         mc:Ignorable="d" 
-        Loaded="WindowLoaded"
         Title="AutomataGP v1.0" Height="536.957" Width="790.217" Background="White">
+
+    
+    
     <Grid SnapsToDevicePixels="True" Background="#FF676767">
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
@@ -76,10 +79,17 @@
 
                     <Border Background="#FF45A9E3" CornerRadius="0,0,0,0">
                         <!-- Bind Rows using the default StackPanel for the ItemsPanel -->
-                        
+
 
                         <DockPanel Margin="10">
-                            <ToolBar DockPanel.Dock="Top" MinHeight="30"/>
+                            <WrapPanel DockPanel.Dock="Top" Margin="0,0,0,5" >
+                                <Button Padding="5" Margin="0,0,4,0" >
+                                    <Image Width="20" Height="20" Source="Images/b_plus.png"/>
+                                </Button>
+                                <Button Padding="5" Margin="0,0,4,0"  >
+                                    <Image Width="20" Height="20" Source="Images/b_open.png"/>
+                                </Button>
+                            </WrapPanel>
                             <dg2d:DataGrid2D Name="FSM_View" UseModifiedDataGridStyle="True" 
                                          ItemsSource2D="{Binding FSM}" MinColumnWidth="50"/>
                         </DockPanel>
@@ -129,4 +139,4 @@
         
         
     </Grid>
-</Window>
+</Controls:MetroWindow>
