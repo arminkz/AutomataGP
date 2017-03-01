@@ -89,9 +89,12 @@
                                 <Button Padding="5" Margin="0,0,4,0"  >
                                     <Image Width="20" Height="20" Source="Images/b_open.png"/>
                                 </Button>
+                                <Button Padding="5" Margin="0,0,4,0" Click="Matrix_OK"  >
+                                    OK
+                                </Button>
                             </WrapPanel>
-                            <dg2d:DataGrid2D Name="FSM_View" UseModifiedDataGridStyle="True" 
-                                         ItemsSource2D="{Binding FSM}" MinColumnWidth="50"/>
+                            <dg2d:DataGrid2D Name="FSM_View" UseModifiedDataGridStyle="True" CellEditEnding="CellEdited"
+                                         ItemsSource2D="{Binding FSM}" MinColumnWidth="50" />
                         </DockPanel>
 
                     </Border>
