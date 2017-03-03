@@ -13,6 +13,9 @@ namespace AutomataGP
         public List<Edge> outgoing;
         public List<Edge> incoming;
 
+        public bool isInitial = false;
+        public bool isFinal = false;
+
         public Vertex(int no)
         {
             this.no = no;

@@ -19,6 +19,7 @@ using MahApps.Metro.Controls;
 using GraphVizWrapper;
 using GraphVizWrapper.Commands;
 using GraphVizWrapper.Queries;
+using System.Diagnostics;
 
 namespace AutomataGP
 {
@@ -44,7 +45,7 @@ namespace AutomataGP
             }
             size++;
 
-            refreshDataGrid();
+            
         }
 
         private void refreshDataGrid()
@@ -69,6 +70,7 @@ namespace AutomataGP
             increaseSize();
             increaseSize();
             increaseSize();
+            refreshDataGrid();
 
             G = new Graph(3);
         }
@@ -76,12 +78,13 @@ namespace AutomataGP
         
         private void WindowLoaded(object sender, RoutedEventArgs e)
         {
-            
+            //AboutFlyout.IsOpen = true;
         }
 
         private void Add_Button_Click(object sender, RoutedEventArgs e)
         {
             increaseSize();
+            refreshDataGrid();
         }
 
         private void UpdateGraph()
@@ -96,8 +99,19 @@ namespace AutomataGP
                 {
                     if (s != "")
                     {
-                        Console.Write("key:" + s);
-                        G.At(i).addOutEdge(s, G.At(j));
+                        //Console.Write("key:" + s);
+                        if (s.Contains(","))
+                        {
+                            string[] sa = s.Split(',');
+                            foreach(string ss in sa)
+                            {
+                                G.At(i).addOutEdge(ss, G.At(j));
+                            }
+                        }
+                        else
+                        {
+                            G.At(i).addOutEdge(s, G.At(j));
+                        }
                     }
                     j++;
                 }
@@ -132,8 +146,58 @@ namespace AutomataGP
 
         private void CellEdited(object sender, DataGridCellEditEndingEventArgs e)
         {
-            
-            
+
+        }
+
+        private void AboutClick(object sender, RoutedEventArgs e)
+        {
+            AboutFlyout.IsOpen = !AboutFlyout.IsOpen;
+        }
+
+        private void Hyperlink_RequestNavigate(object sender, RequestNavigateEventArgs e)
+        {
+            Process.Start(new ProcessStartInfo(e.Uri.AbsoluteUri));
+            e.Handled = true;
+        }
+
+        private void Load_Button_Click(object sender, RoutedEventArgs e)
+        {
+            Microsoft.Win32.OpenFileDialog dlg = new Microsoft.Win32.OpenFileDialog();
+
+            dlg.DefaultExt = ".txt";
+            dlg.Filter = "Text Files (*.txt)|*.txt";
+
+            Nullable<bool> result = dlg.ShowDialog();
+            if (result == true)
+            {
+                string filename = dlg.FileName;
+                string[] lines = System.IO.File.ReadAllLines(filename);
+                FSM = new List<List<string>>();
+                int i_size = Convert.ToInt32(lines[0]);
+                int i_initState = Convert.ToInt32(lines[1]);
+                List<int> i_finalStates = new List<int>();
+                string[] fss = lines[2].Split(',');
+                foreach(string fssi in fss)
+                {
+                    i_finalStates.Add(Convert.ToInt32(fssi));
+                }
+                for(int i=0;i< i_size; i++)
+                {
+                    increaseSize();
+                }
+                for(int i = 0; i < i_size; i++)
+                {
+                    string[] ttr = lines[3 + i].Split(' ');
+                    for(int j=0; j< i_size; j++)
+                    {
+                        if(ttr[j] != "_")
+                        {
+                            FSM[i][j] = ttr[j];
+                        }
+                    }
+                }
+                refreshDataGrid();
+            }
         }
     }
 }

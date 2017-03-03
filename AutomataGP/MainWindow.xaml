@@ -6,11 +6,54 @@
         xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
         xmlns:dg2d="clr-namespace:DataGrid2DLibrary;assembly=DataGrid2DLibrary"
         xmlns:local="clr-namespace:AutomataGP"
-        mc:Ignorable="d" Loaded="WindowLoaded"
+        mc:Ignorable="d" Loaded="WindowLoaded" Padding="0"
         Title="AutomataGP v1.0" Height="536.957" Width="790.217" Background="White" SnapsToDevicePixels="True">
 
-    
-    
+
+    <Controls:MetroWindow.RightWindowCommands>
+        <Controls:WindowCommands>
+            <Button Content="about" Click="AboutClick" />
+            <!--<Button>
+                <StackPanel Orientation="Horizontal">
+                    <Rectangle Width="20" Height="20" Fill="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}">
+                        <Rectangle.OpacityMask>
+                            <VisualBrush Stretch="Fill" Visual="{StaticResource appbar_cupcake}" />
+                        </Rectangle.OpacityMask>
+                    </Rectangle>
+                    <TextBlock Margin="4 0 0 0"
+                   VerticalAlignment="Center"
+                   Text="deploy cupcakes" />
+                </StackPanel>
+            </Button>-->
+        </Controls:WindowCommands>
+    </Controls:MetroWindow.RightWindowCommands>
+
+
+    <Controls:MetroWindow.Flyouts>
+        <Controls:FlyoutsControl>
+            <Controls:Flyout Name="AboutFlyout" Header="About" Position="Right" Width="250">
+                <StackPanel Margin="10">
+                    <TextBlock TextWrapping="WrapWithOverflow">
+                        AutomataGP is a free tool in order to manipulate and visualize automata (finite state machines)
+                        <Hyperlink NavigateUri="https://github.com/arminkz/AutomataGP" RequestNavigate="Hyperlink_RequestNavigate">
+                            view on GitHub
+                        </Hyperlink>
+                    </TextBlock>
+                    
+                    <TextBlock Margin="0,20,0,0" Text="Developed By :"/>
+                    <TextBlock Margin="0,20,0,0">
+                        Armin Kazemi (
+                        <Hyperlink NavigateUri="https://github.com/arminkz" RequestNavigate="Hyperlink_RequestNavigate">
+                            @arminkz
+                        </Hyperlink>
+                        )
+                    </TextBlock>
+                </StackPanel>
+            </Controls:Flyout>
+        </Controls:FlyoutsControl>
+    </Controls:MetroWindow.Flyouts>
+
+
     <Grid  Background="#FF676767">
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
@@ -83,14 +126,14 @@
 
                         <DockPanel Margin="10">
                             <WrapPanel DockPanel.Dock="Top" Margin="0,0,0,5" >
-                                <Button Padding="5" Margin="0,0,4,0" Click="Add_Button_Click">
+                                <Button Padding="5" Margin="0,0,4,0" Click="Add_Button_Click" Style="{DynamicResource SquareButtonStyle}" >
                                     <Image Width="20" Height="20" Source="Images/b_plus.png"/>
                                 </Button>
-                                <Button Padding="5" Margin="0,0,4,0"  >
+                                <Button Padding="5" Margin="0,0,4,0" Click="Load_Button_Click" Style="{DynamicResource SquareButtonStyle}" >
                                     <Image Width="20" Height="20" Source="Images/b_open.png"/>
                                 </Button>
-                                <Button Padding="5" Margin="0,0,4,0" Click="Matrix_OK"  >
-                                    OK
+                                <Button Padding="5" Margin="0,0,4,0" Click="Matrix_OK" Style="{DynamicResource SquareButtonStyle}" Background="Lime" >
+                                    <Image Width="20" Height="20" Source="Images/valid.png"/>
                                 </Button>
                             </WrapPanel>
                             <dg2d:DataGrid2D Name="FSM_View" UseModifiedDataGridStyle="True" CellEditEnding="CellEdited"
@@ -113,9 +156,10 @@
 
                     <Border Background="#FF45A9E3" >
                         <Border Background="White" Margin="10" BorderBrush="#FF686868" BorderThickness="1">
-                            <Image  Name="GraphVizHost" HorizontalAlignment="Center" VerticalAlignment="Center" Stretch="None">
-
-                            </Image>
+                            <Grid>
+                                <Label Content="" Panel.ZIndex="1" Margin="10" HorizontalAlignment="Left" VerticalAlignment="Top" />
+                                <Image  Name="GraphVizHost" Panel.ZIndex="0"  HorizontalAlignment="Center" VerticalAlignment="Center" Stretch="None" Source="Images/warn.png"/>
+                            </Grid>
                         </Border>
                     </Border>
 
@@ -130,6 +174,14 @@
                     </TabItem.Header>
 
                     <Border Background="#FF45A9E3">
+                        <WrapPanel Margin="10">
+                            <Controls:Tile Title="String Acceptor" Background="#FF42424E"
+                                TiltFactor="10"
+                                Width="120" Height="120" />
+                            <Controls:Tile Title="Convert NDFA to DFA" Background="#FF42424E"
+                                TiltFactor="10"
+                                Width="120" Height="120" />
+                        </WrapPanel>
                         
                     </Border>
 
