@@ -27,6 +27,7 @@
             </Button>-->
         </Controls:WindowCommands>
     </Controls:MetroWindow.RightWindowCommands>
+    
 
 
     <Controls:MetroWindow.Flyouts>
@@ -132,12 +133,27 @@
                                 <Button Padding="5" Margin="0,0,4,0" Click="Load_Button_Click" Style="{DynamicResource SquareButtonStyle}" >
                                     <Image Width="20" Height="20" Source="Images/b_open.png"/>
                                 </Button>
-                                <Button Padding="5" Margin="0,0,4,0" Click="Matrix_OK" Style="{DynamicResource SquareButtonStyle}" Background="Lime" >
+                                <Button Padding="5" Margin="0,0,4,0" Click="Matrix_OK" Style="{DynamicResource SquareButtonStyle}">
                                     <Image Width="20" Height="20" Source="Images/valid.png"/>
                                 </Button>
                             </WrapPanel>
+                            <Border DockPanel.Dock="Bottom" Background="White" Padding="5" Margin="1,0,1,0">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="75"/>
+                                        <ColumnDefinition Width="50"/>
+                                        <ColumnDefinition Width="75"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Text="Initial State :" VerticalAlignment="Center"/>
+                                    <TextBox Grid.Column="1" Name="initial_s_text" BorderThickness="0" Margin="0,3,0,0"/>
+                                    <TextBlock Grid.Column="2" Text="Final States :" VerticalAlignment="Center"/>
+                                    <TextBox Grid.Column="3" Name="final_s_text" BorderThickness="0" Margin="0,3,0,0"/>
+                                </Grid>
+                            </Border>
                             <dg2d:DataGrid2D Name="FSM_View" UseModifiedDataGridStyle="True" CellEditEnding="CellEdited"
                                          ItemsSource2D="{Binding FSM}" MinColumnWidth="50" />
+                            
                         </DockPanel>
 
                     </Border>
@@ -175,13 +191,13 @@
 
                     <Border Background="#FF45A9E3">
                         <WrapPanel Margin="10">
-                            <Controls:Tile Title="String Acceptor" Background="#FF42424E"
-                                TiltFactor="10"
+                            <Controls:Tile Title="String Acceptor" Background="#F1F1F1" Foreground="#000"
+                                TiltFactor="10" Click="String_Accept_Click"
                                 Width="120" Height="120" />
-                            <Controls:Tile Title="Convert NDFA to DFA" Background="#FF42424E"
-                                TiltFactor="10"
+                            <Controls:Tile Title="Convert NDFA to DFA" Background="#F1F1F1" Foreground="#000"
+                                TiltFactor="10" Margin="10,0,0,0" 
                                 Width="120" Height="120" />
-                        </WrapPanel>
+                        </WrapPanel> 
                         
                     </Border>
 

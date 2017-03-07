@@ -23,7 +23,7 @@ namespace AutomataGP
             incoming = new List<Edge>();
         }
 
-        public void addOutEdge(String key, Vertex to)
+        public void addOutEdge(char key, Vertex to)
         {
             Edge e = new Edge(key, this, to);
             outgoing.Add(e);
@@ -37,7 +37,7 @@ namespace AutomataGP
             outgoing.Remove(e);
         }
 
-        public void addInEdge(String key, Vertex from)
+        public void addInEdge(char key, Vertex from)
         {
             Edge e = new Edge(key, from, this);
             incoming.Add(e);

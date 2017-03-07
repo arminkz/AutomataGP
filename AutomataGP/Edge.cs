@@ -10,9 +10,9 @@ namespace AutomataGP
     {
         public Vertex from { get; set; }
         public Vertex to { get; set; }
-        public string key { get; set; }
+        public char key { get; set; }
 
-        public Edge(string key, Vertex from, Vertex to)
+        public Edge(char key, Vertex from, Vertex to)
         {
             this.key = key;
             this.from = from;

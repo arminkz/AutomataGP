@@ -15,6 +15,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using MahApps.Metro.Controls;
+using MahApps.Metro.Controls.Dialogs;
 
 using GraphVizWrapper;
 using GraphVizWrapper.Commands;
@@ -79,6 +80,8 @@ namespace AutomataGP
         private void WindowLoaded(object sender, RoutedEventArgs e)
         {
             //AboutFlyout.IsOpen = true;
+            //this.ShowMessageAsync("Welcome !", "this will burn your wools");
+            
         }
 
         private void Add_Button_Click(object sender, RoutedEventArgs e)
@@ -105,12 +108,12 @@ namespace AutomataGP
                             string[] sa = s.Split(',');
                             foreach(string ss in sa)
                             {
-                                G.At(i).addOutEdge(ss, G.At(j));
+                                G.At(i).addOutEdge(ss[0], G.At(j));
                             }
                         }
                         else
                         {
-                            G.At(i).addOutEdge(s, G.At(j));
+                            G.At(i).addOutEdge(s[0], G.At(j));
                         }
                     }
                     j++;
@@ -118,7 +121,23 @@ namespace AutomataGP
                 i++;
             }
 
-            //refreshDataGrid();
+            //Configure Initial State
+            if (initial_s_text.Text != "")
+            {
+                G.At(Convert.ToInt32(initial_s_text.Text)).isInitial = true;
+                G.initialState = Convert.ToInt32(initial_s_text.Text);
+            }
+
+            //Configure Final States
+            if (final_s_text.Text != "")
+            {
+                string[] segments = final_s_text.Text.Split(',');
+                foreach (string s in segments)
+                {
+                    G.At(Convert.ToInt32(s)).isFinal = true;
+                }
+            }
+
         }
 
         private void GraphVizDraw()
@@ -197,6 +216,19 @@ namespace AutomataGP
                     }
                 }
                 refreshDataGrid();
+            }
+        }
+
+        private async void String_Accept_Click(object sender, RoutedEventArgs e)
+        {
+            string str = await this.ShowInputAsync("String Acceptor", "please enter a string :");
+            if(str != null)
+            {
+                if(G.acceptString(str))
+                    await this.ShowMessageAsync("Yes !", "string was accepted");
+                else
+                    await this.ShowMessageAsync("No !", "string was not accepted");
+
             }
         }
     }
