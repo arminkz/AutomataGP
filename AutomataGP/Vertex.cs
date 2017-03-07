@@ -9,12 +9,14 @@ namespace AutomataGP
     class Vertex
     {
         public int no;
+        public string name { get; set; }
 
         public List<Edge> outgoing;
         public List<Edge> incoming;
 
         public bool isInitial = false;
         public bool isFinal = false;
+
 
         public Vertex(int no)
         {
@@ -52,6 +54,17 @@ namespace AutomataGP
                 str += "(" + e.to.no + "," + e.key + ") ";
             }
             return str;
+        }
+
+        public bool Equals(Vertex v)
+        {
+            return v.no == no;
+        }
+
+        public string GetName()
+        {
+            if (name == null || name.Trim(' ') == "") return "S" + no;
+            else return name;
         }
 
     }

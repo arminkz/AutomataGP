@@ -52,20 +52,20 @@ namespace AutomataGP
                 if (v.isInitial)
                 {
                     node_init_str.Append("I" + init_state_counter + "\n");
-                    edge_str.Append("I" + init_state_counter + "->" + "S" + v.no + "\n");
+                    edge_str.Append("I" + init_state_counter + "->" + v.GetName() + "\n");
                     init_state_counter++;
                 }
                 if (v.isFinal)
                 {
-                    node_final_str.Append("S" + v.no + "\n");
+                    node_final_str.Append(v.GetName() + "\n");
                 }
                 else
                 {
-                    node_str.Append("S" + v.no + "\n");
+                    node_str.Append(v.GetName() + "\n");
                 }
                 foreach (Edge edge in v.outgoing)
                 {
-                    edge_str.Append("S" + edge.from.no + "->" + "S" + edge.to.no + " [label=" + edge.key + "]" + "\n");
+                    edge_str.Append(edge.from.GetName() + "->" + edge.to.GetName() + " [label=" + edge.key + "]" + "\n");
                 }
             }
 
@@ -107,6 +107,51 @@ namespace AutomataGP
 
             return b;
 
+        }
+
+        public static Graph ConvertToDFA(Graph g)
+        {
+            Graph h = new Graph(0);
+
+            List<char> alphabet = new List<char>() { 'a', 'b' };
+            List<ComplexVertex> cstates = new List<ComplexVertex>();
+
+            //Create all Combinations of NDFA States to create DFA States
+            double count = Math.Pow(2, g.vertices.Count);
+            for (int i = 1; i <= count - 1; i++)
+            {
+                List<Vertex> state = new List<Vertex>();
+                string str = Convert.ToString(i, 2).PadLeft(g.vertices.Count, '0');
+                for (int j = 0; j < str.Length; j++)
+                {
+                    if (str[j] == '1')
+                    {
+                        state.Add(g.At(j));
+                    }
+                }
+                cstates.Add(new ComplexVertex(state));
+            }
+
+            //Convert Complex Vertices to Simple Vertices
+            foreach (ComplexVertex cv in cstates)
+                h.vertices.Add(cv.toVertex());
+
+            //Create Edges
+            for (int cvi = 0; cvi < cstates.Count; cvi++)
+                foreach (char alpha in alphabet)
+                {
+                    ComplexVertex target = cstates[cvi].onTrasition(alpha);
+                    for (int cvicomp = 0; cvicomp < cstates.Count; cvicomp++)
+                    {
+                        if (cstates[cvicomp].Equals(target))
+                        {
+                            h.At(cvi).addOutEdge(alpha, h.At(cvicomp));
+                        }
+                    }
+                }
+
+
+            return h;
         }
 
     }

@@ -70,10 +70,10 @@ namespace AutomataGP
             FSM_View.DataContext = this;
             increaseSize();
             increaseSize();
-            increaseSize();
+            //increaseSize();
             refreshDataGrid();
 
-            G = new Graph(3);
+            G = new Graph(2);
         }
 
         
@@ -230,6 +230,13 @@ namespace AutomataGP
                     await this.ShowMessageAsync("No !", "string was not accepted");
 
             }
+        }
+
+        private void Convert_NFA_Click(object sender, RoutedEventArgs e)
+        {
+            Graph H = Graph.ConvertToDFA(G);
+            G = H;
+            GraphVizDraw();
         }
     }
 }

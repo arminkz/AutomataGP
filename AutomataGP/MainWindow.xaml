@@ -195,7 +195,7 @@
                                 TiltFactor="10" Click="String_Accept_Click"
                                 Width="120" Height="120" />
                             <Controls:Tile Title="Convert NDFA to DFA" Background="#F1F1F1" Foreground="#000"
-                                TiltFactor="10" Margin="10,0,0,0" 
+                                TiltFactor="10" Margin="10,0,0,0" Click="Convert_NFA_Click"
                                 Width="120" Height="120" />
                         </WrapPanel> 
                         
