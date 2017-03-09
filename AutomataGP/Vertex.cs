@@ -17,6 +17,7 @@ namespace AutomataGP
         public bool isInitial = false;
         public bool isFinal = false;
 
+        public bool isReachable = true;
 
         public Vertex(int no)
         {
@@ -45,6 +46,13 @@ namespace AutomataGP
             incoming.Add(e);
             from.outgoing.Add(e);
         }
+
+        /*public void removeInEdge(Edge e)
+        {
+            //Edge e = new Edge(key, from, this);
+            incoming.Add(e);
+            from.outgoing.Add(e);
+        }*/
 
         public string getAdj()
         {

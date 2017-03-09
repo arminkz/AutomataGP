@@ -55,17 +55,19 @@ namespace AutomataGP
                     edge_str.Append("I" + init_state_counter + "->" + v.GetName() + "\n");
                     init_state_counter++;
                 }
+                string color_string = (v.isReachable) ? "" : " [color=\"#CCCCCC\"]";
+                string color_string_2 = (v.isReachable) ? "" : " color=\"#CCCCCC\"";
                 if (v.isFinal)
                 {
-                    node_final_str.Append(v.GetName() + "\n");
+                    node_final_str.Append(v.GetName() + color_string + "\n");
                 }
                 else
                 {
-                    node_str.Append(v.GetName() + "\n");
+                    node_str.Append(v.GetName() + color_string + "\n");
                 }
                 foreach (Edge edge in v.outgoing)
                 {
-                    edge_str.Append(edge.from.GetName() + "->" + edge.to.GetName() + " [label=" + edge.key + "]" + "\n");
+                    edge_str.Append(edge.from.GetName() + "->" + edge.to.GetName() + " [label=" + edge.key + color_string_2 + "]" + "\n");
                 }
             }
 
@@ -109,6 +111,47 @@ namespace AutomataGP
 
         }
 
+        public void CheckReachability()
+        {
+            foreach(Vertex v in vertices)
+            {
+                v.isReachable = false;
+            }
+            CheckReachability(At(initialState));
+        }
+
+        private void CheckReachability(Vertex v)
+        {
+            if (v.isReachable) return;
+            v.isReachable = true;
+            foreach (Edge e in v.outgoing)
+            {
+                CheckReachability(e.to);
+            }
+        }
+
+        public void RemoveUnreachables()
+        {
+            int i = 0;
+            while (i < vertices.Count)
+            {
+                Vertex v = vertices[i];
+                if (!v.isReachable)
+                {
+                    foreach(Edge e in v.outgoing)
+                    {
+                        e.to.incoming.Remove(e);
+                    }
+                    //Remove v
+                    vertices.RemoveAt(i);
+                }
+                else
+                {
+                    i++;
+                }
+            }
+        }
+
         public static Graph ConvertToDFA(Graph g)
         {
             Graph h = new Graph(0);
@@ -133,8 +176,14 @@ namespace AutomataGP
             }
 
             //Convert Complex Vertices to Simple Vertices
-            foreach (ComplexVertex cv in cstates)
-                h.vertices.Add(cv.toVertex());
+            for(int cvi = 0; cvi < cstates.Count; cvi++)
+            {
+                ComplexVertex cv = cstates[cvi];
+                Vertex v = cv.toVertex();
+                h.vertices.Add(v);
+                if (v.isInitial) h.initialState = cvi;
+            }
+                
 
             //Create Edges
             for (int cvi = 0; cvi < cstates.Count; cvi++)

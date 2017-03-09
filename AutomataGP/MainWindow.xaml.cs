@@ -236,6 +236,8 @@ namespace AutomataGP
         {
             Graph H = Graph.ConvertToDFA(G);
             G = H;
+            G.CheckReachability();
+            G.RemoveUnreachables();
             GraphVizDraw();
         }
     }
