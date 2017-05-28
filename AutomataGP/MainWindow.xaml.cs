@@ -189,6 +189,7 @@ namespace AutomataGP
             Nullable<bool> result = dlg.ShowDialog();
             if (result == true)
             {
+                G = new Graph(0);
                 string filename = dlg.FileName;
                 string[] lines = System.IO.File.ReadAllLines(filename);
                 FSM = new List<List<string>>();
