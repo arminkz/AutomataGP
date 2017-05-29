@@ -233,6 +233,19 @@ namespace AutomataGP
             }
         }
 
+        private async void String_Accept_NPDA_Click(object sender, RoutedEventArgs e)
+        {
+            string str = await this.ShowInputAsync("NPDA Acceptor", "please enter a string :");
+            if (str != null)
+            {
+                if (G.acceptStringNPDA(str))
+                    await this.ShowMessageAsync("Yes !", "string was accepted");
+                else
+                    await this.ShowMessageAsync("No !", "string was not accepted");
+
+            }
+        }
+
         private void Convert_NFA_Click(object sender, RoutedEventArgs e)
         {
             Graph H = Graph.ConvertToDFA(G);
@@ -241,5 +254,61 @@ namespace AutomataGP
             G.RemoveUnreachables();
             GraphVizDraw();
         }
+
+        private async void Load_PDA_Button_Click(object sender, RoutedEventArgs e)
+        {
+            Microsoft.Win32.OpenFileDialog dlg = new Microsoft.Win32.OpenFileDialog();
+
+            dlg.DefaultExt = ".txt";
+            dlg.Filter = "Text Files (*.txt)|*.txt";
+
+            Nullable<bool> result = dlg.ShowDialog();
+            if (result == true)
+            {
+                string filename = dlg.FileName;
+                string[] lines = System.IO.File.ReadAllLines(filename);
+
+                int graph_size = Convert.ToInt16(lines[0]);
+                G = new Graph(graph_size);
+
+                G.initialState = Convert.ToInt16(lines[1]);
+
+                string[] fssegments = lines[2].Split(',');
+                foreach (string s in fssegments)
+                {
+                    G.At(Convert.ToInt32(s)).isFinal = true;
+                }
+
+
+                for (int i = 3; i < lines.Count(); i++)
+                {
+                    string[] segments = lines[i].Split(' ');
+                    int from_index = Convert.ToInt16(segments[0]);
+                    int to_index = Convert.ToInt16(segments[3]);
+                    char key = segments[1].ElementAt(0);
+                    char npda_pop = segments[2].ElementAt(0);
+                    string npda_push = Reverse(segments[4]);
+
+                    Edge edge = new Edge(key, G.At(from_index), G.At(to_index), npda_pop, npda_push);
+                    G.At(from_index).addOutEdge(edge);
+                }
+
+                await this.ShowMessageAsync("Load NPDA", "NPDA Loaded Successfully !");
+                GraphVizDraw();
+            }
+        }
+
+        public static string Reverse(string s)
+        {
+            char[] charArray = s.ToCharArray();
+            Array.Reverse(charArray);
+            return new string(charArray);
+        }
+
+        private void NPDA_Parse(object sender, RoutedEventArgs e)
+        {
+            
+        }
+
     }
 }

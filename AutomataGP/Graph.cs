@@ -67,7 +67,8 @@ namespace AutomataGP
                 }
                 foreach (Edge edge in v.outgoing)
                 {
-                    edge_str.Append(edge.from.GetName() + "->" + edge.to.GetName() + " [label=" + edge.key + color_string_2 + "]" + "\n");
+                    string trstr = edge.isPDA ? (edge.key + "_" + Convert.ToString(edge.npda_pop) + "_" + edge.npda_push) : Convert.ToString(edge.key);
+                    edge_str.Append(edge.from.GetName() + "->" + edge.to.GetName() + " [label=" + trstr + color_string_2 + "]" + "\n");
                 }
             }
 
@@ -109,6 +110,52 @@ namespace AutomataGP
 
             return b;
 
+        }
+
+        public bool acceptStringNPDA(string s)
+        {
+            return acceptStringNPDA(s, 0, initialState,"z");
+        }
+
+        public bool acceptStringNPDA(string s, int n, int curState, string stack)
+        {
+
+            if (n == s.Length)
+            {
+                foreach (Edge e in At(curState).outgoing)
+                {
+                    char peek = stack.ElementAt(stack.Length - 1);
+                    //Console.WriteLine("Checking Acceptence ...");
+                    if (e.key == 'l' && e.npda_pop == peek)
+                    {
+                        if (e.to.isFinal) return true;
+                    }
+                }
+                return false;
+            }
+
+            char c = s[n];
+            bool b = false;
+
+            /*Console.WriteLine("Index : " + n);
+            Console.WriteLine("CurState : " + curState);
+            Console.WriteLine("Stack : " + stack);
+            Console.WriteLine("Read Char : " + c);
+            Console.WriteLine("-----------------------");*/
+
+            foreach (Edge e in At(curState).outgoing)
+            {
+                char peek = stack.ElementAt(stack.Length - 1);
+                //Console.WriteLine("Checking Next Move : " + e.key + " with peek " + e.npda_pop);
+                if ((e.key == c || e.key == 'l') && e.npda_pop == peek)
+                {
+                    //Console.WriteLine("CAN GO !");
+                    string new_stack = stack.Substring(0, stack.Length - 1) + (e.npda_push == "l" ? "" : e.npda_push);
+                    b = b || acceptStringNPDA(s, n + (e.key == 'l' ? 0 : 1), e.to.no, new_stack);
+                }
+            }
+
+            return b;
         }
 
         public void CheckReachability()

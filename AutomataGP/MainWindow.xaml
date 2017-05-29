@@ -133,6 +133,9 @@
                                 <Button Padding="5" Margin="0,0,4,0" Click="Load_Button_Click" Style="{DynamicResource SquareButtonStyle}" >
                                     <Image Width="20" Height="20" Source="Images/b_open.png"/>
                                 </Button>
+                                <Button Padding="5" Margin="0,0,4,0" Click="Load_PDA_Button_Click" Style="{DynamicResource SquareButtonStyle}" >
+                                    <Image Width="20" Height="20" Source="Images/b_open.png"/>
+                                </Button>
                                 <Button Padding="5" Margin="0,0,4,0" Click="Matrix_OK" Style="{DynamicResource SquareButtonStyle}">
                                     <Image Width="20" Height="20" Source="Images/valid.png"/>
                                 </Button>
@@ -196,6 +199,9 @@
                                 Width="120" Height="120" />
                             <Controls:Tile Title="Convert NDFA to DFA" Background="#F1F1F1" Foreground="#000"
                                 TiltFactor="10" Margin="10,0,0,0" Click="Convert_NFA_Click"
+                                Width="120" Height="120" />
+                            <Controls:Tile Title="NPDA Acceptor" Background="#F1F1F1" Foreground="#000"
+                                TiltFactor="10" Margin="10,0,0,0" Click="String_Accept_NPDA_Click"
                                 Width="120" Height="120" />
                         </WrapPanel> 
                         

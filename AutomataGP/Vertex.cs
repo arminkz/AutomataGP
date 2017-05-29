@@ -26,6 +26,12 @@ namespace AutomataGP
             incoming = new List<Edge>();
         }
 
+        public void addOutEdge(Edge e)
+        {
+            outgoing.Add(e);
+            e.to.incoming.Add(e);
+        }
+
         public void addOutEdge(char key, Vertex to)
         {
             Edge e = new Edge(key, this, to);
@@ -40,12 +46,12 @@ namespace AutomataGP
             outgoing.Remove(e);
         }
 
-        public void addInEdge(char key, Vertex from)
+        /*public void addInEdge(char key, Vertex from)
         {
             Edge e = new Edge(key, from, this);
             incoming.Add(e);
             from.outgoing.Add(e);
-        }
+        }*/
 
         /*public void removeInEdge(Edge e)
         {
